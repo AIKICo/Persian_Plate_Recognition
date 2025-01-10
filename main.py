@@ -11,7 +11,7 @@ file_name = f'output_{timestamp}.jpg'
 classnames = ['car', 'plate']
 charclassnames = ['0','9','b','d','ein','ein','g','gh','h','n','s','1','malul','n','s','sad','t','ta','v','y','2'
                   ,'3','4','5','6','7','8']
-source = "assets/video.mp4"
+source = "assets/output.mp4"
 #load YOLOv8 model
 model_object = YOLO("weights/best.pt")
 model_char = YOLO("weights/yolov8n_char_new.pt")
