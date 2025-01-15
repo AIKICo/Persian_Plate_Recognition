@@ -3,6 +3,7 @@ import cv2
 import math
 import time
 import datetime
+import easyocr
 
 # Get the current timestamp for output names
 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
@@ -11,8 +12,8 @@ file_name = f'output_{timestamp}.jpg'
 classnames = ['car', 'plate']
 charclassnames = ['0','9','b','d','ein','ein','g','gh','h','n','s','1','malul','n','s','sad','t','ta','v','y','2'
                   ,'3','4','5','6','7','8']
-# source = "assets/output.mp4"
-source = 1
+source = "assets/output.mp4"
+# source = 1
 #load YOLOv8 model
 model_object = YOLO("weights/best.pt")
 model_char = YOLO("weights/yolov8n_char_new.pt")
@@ -57,6 +58,10 @@ if total_frames > 1:
                         char_display = []
                         #crop plate from frame
                         plate_img = img[ y1:y2, x1:x2]
+
+                        # reader = easyocr.Reader(['fa'],  gpu=True, recognizer='Transformer')  # this needs to run only once to load the model into memory
+                        # result = reader.readtext(plate_img)
+                        # print(result[1][1])
                         #detect characters of plate with yolov8n model
                         plate_output = model_char(plate_img, conf=0.3)
                         tock_2 = time.time()
@@ -77,7 +82,6 @@ if total_frames > 1:
                         char_result ='Plate: ' + (''.join(char_display))
                         fps_text_2 = "FPS: {:.2f}".format(1/elapsed_time_2)
                         text_size, _ = cv2.getTextSize(fps_text_2, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
-
                         #just show the correct characters in output
                         if len(char_display) == 8:
                             cv2.line(img, (max(40, x1 - 25 ), max(40, y1 - 10)), (x2 + 25 ,y1 - 10), (0, 0, 0), 20,lineType=cv2.LINE_AA)
@@ -122,6 +126,10 @@ else: #do inference for image
                 char_display = []
                 #crop plate from frame
                 plate_img = img[y1:y2, x1:x2]
+
+                reader = easyocr.Reader(['fa'])  # this needs to run only once to load the model into memory
+                result = reader.readtext(plate_img)
+
                 #detect characters of plate with yolov8n model
                 plate_output = model_char(plate_img, conf=0.4)
                 
