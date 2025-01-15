@@ -3,15 +3,13 @@ import cv2
 import math
 import time
 import datetime
-import easyocr
+from config import charclassnames
 
 # Get the current timestamp for output names
 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 # Define the file name with the timestamp
 file_name = f'output_{timestamp}.jpg'
 classnames = ['car', 'plate']
-charclassnames = ['0','9','b','d','ein','ein','g','gh','h','n','s','1','malul','n','s','sad','t','ta','v','y','2'
-                  ,'3','4','5','6','7','8']
 source = "assets/output.mp4"
 # source = 1
 #load YOLOv8 model
@@ -126,9 +124,6 @@ else: #do inference for image
                 char_display = []
                 #crop plate from frame
                 plate_img = img[y1:y2, x1:x2]
-
-                reader = easyocr.Reader(['fa'])  # this needs to run only once to load the model into memory
-                result = reader.readtext(plate_img)
 
                 #detect characters of plate with yolov8n model
                 plate_output = model_char(plate_img, conf=0.4)
