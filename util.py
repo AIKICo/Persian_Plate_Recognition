@@ -24,35 +24,5 @@ def detect_characters(plate_region, model):
     detected_characters = ''.join([charclassnames[cls] for cls, _ in detected_classes if cls < len(charclassnames)])
     
     return detected_characters
-
-# def process_video(video_source, plate_model, ocr_model, output_file_path, draw_text_with_background):
-#     cap = cv2.VideoCapture(video_source)
-#     width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-#     height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-#     fps = cap.get(cv2.CAP_PROP_FPS)
-#
-#     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-#     out = cv2.VideoWriter(output_file_path, fourcc, fps, (width, height))
-#
-#     while cap.isOpened():
-#         ret, frame = cap.read()
-#         if not ret:
-#             break
-#
-#         results = detect_plates(frame, plate_model)
-#
-#         for result in results:
-#             if result.boxes is not None:
-#                 for box in result.boxes.data:
-#                     x1, y1, x2, y2, conf, cls = box.tolist()
-#                     plate_region = frame[int(y1):int(y2), int(x1):int(x2)]
-#                     detected_characters = detect_characters(plate_region, ocr_model)
-#
-#                     # Draw bounding box and text with background for each plate
-#                     cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
-#                     draw_text_with_background(frame, detected_characters, (int(x1), int(y1) - 10))
-#
-#         out.write(frame)
-#
 #     cap.release()
 #     out.release()
