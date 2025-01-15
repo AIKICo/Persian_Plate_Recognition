@@ -11,7 +11,8 @@ file_name = f'output_{timestamp}.jpg'
 classnames = ['car', 'plate']
 charclassnames = ['0','9','b','d','ein','ein','g','gh','h','n','s','1','malul','n','s','sad','t','ta','v','y','2'
                   ,'3','4','5','6','7','8']
-source = "assets/output.mp4"
+# source = "assets/output.mp4"
+source = 1
 #load YOLOv8 model
 model_object = YOLO("weights/best.pt")
 model_char = YOLO("weights/yolov8n_char_new.pt")
@@ -49,7 +50,7 @@ if total_frames > 1:
                         cv2.putText(img, f'{confs}', (max(40, x2 + 5), max(40, y2 + 5)), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.5, color=(0, 20, 255),thickness=1, lineType=cv2.LINE_AA)
                     elif cls_names == 0:
                         cv2.putText(img, f'{confs}', (max(40, x1), max(40, y1)), fontFace=cv2.FONT_HERSHEY_TRIPLEX, fontScale=0.6, color=(0, 20, 255),thickness=1, lineType=cv2.LINE_AA)
-                    
+
 
                     #check plate to recognize characters with yolov8n model
                     if cls_names == 1:
@@ -60,7 +61,7 @@ if total_frames > 1:
                         plate_output = model_char(plate_img, conf=0.3)
                         tock_2 = time.time()
                         elapsed_time_2 = tock_2 - tick
-                        
+
                         #extract bounding box and class names
                         bbox = plate_output[0].boxes.xyxy
                         cls = plate_output[0].boxes.cls
@@ -76,7 +77,7 @@ if total_frames > 1:
                         char_result ='Plate: ' + (''.join(char_display))
                         fps_text_2 = "FPS: {:.2f}".format(1/elapsed_time_2)
                         text_size, _ = cv2.getTextSize(fps_text_2, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)
-            
+
                         #just show the correct characters in output
                         if len(char_display) == 8:
                             cv2.line(img, (max(40, x1 - 25 ), max(40, y1 - 10)), (x2 + 25 ,y1 - 10), (0, 0, 0), 20,lineType=cv2.LINE_AA)
