@@ -15,7 +15,9 @@ def draw_text_with_background(image, text, position, font_scale=0.5, font_thickn
     rectangle_pt1 = (x, y - text_size[1] - 5)
     rectangle_pt2 = (x + text_size[0] + 2, y)
     cv2.rectangle(image, rectangle_pt1, rectangle_pt2, (0, 0, 0), thickness=cv2.FILLED)
-    cv2.putText(image, text, (x, y - 2), font, font_scale, (255, 255, 255), font_thickness)
+    if text!='':
+        print(f'License Card Plate Detection: {text}')
+        cv2.putText(image, text, (x, y - 2), font, font_scale, (255, 255, 255), font_thickness)
 
 def process_frame(frame_in, plate_model_in, ocr_model_in):
     results = detect_plates(frame_in, plate_model_in)
@@ -29,7 +31,6 @@ def process_frame(frame_in, plate_model_in, ocr_model_in):
                 # Draw bounding box and text with background for each plate
                 cv2.rectangle(frame, (int(x1), int(y1)), (int(x2), int(y2)), (0, 255, 0), 2)
                 draw_text_with_background(frame, detected_characters, (int(x1), int(y1) - 10))
-                print(f'License Card Plate Detection: {detected_characters}')
     return frame
 
 if __name__ == '__main__':
